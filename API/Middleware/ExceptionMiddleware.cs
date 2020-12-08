@@ -3,9 +3,10 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using API.Errors;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace API.Middleware
 {
@@ -13,9 +14,9 @@ namespace API.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IHostEnvironment _env;
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger,
-        IHostingEnvironment env)
+        IHostEnvironment env)
         {
             _env = env;
             _logger = logger;

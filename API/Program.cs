@@ -19,11 +19,18 @@ namespace API
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var env = services.GetRequiredService<IWebHostEnvironment>();
                 try
                 {
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
-                    await StoreContextSeed.SeedAsync(context, loggerFactory);
+
+                    string seedDataPath = "wwwroot/SeedData/";
+                    if (env.IsDevelopment())
+                    {
+                        seedDataPath = "../Infrastructure/Data/SeedData/";
+                    }                    
+                    await StoreContextSeed.SeedAsync(context,seedDataPath, loggerFactory);
                 }
                 catch (Exception ex)
                 {                    
