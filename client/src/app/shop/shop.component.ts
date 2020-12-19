@@ -12,8 +12,8 @@ import { ShopService } from './shop.service';
 })
 export class ShopComponent implements OnInit {
   
-  @ViewChild('search',{static: true}) searchTrem : ElementRef | undefined;
-
+  @ViewChild('search',{static: false}) searchTrem : ElementRef | undefined;
+  loadCompleted = false;
   products : IProduct[] = [];
   brands : IBrand[] = [];
   types : IType[] = [];
@@ -29,10 +29,10 @@ export class ShopComponent implements OnInit {
 
   constructor(private shopService : ShopService) { }
 
-  ngOnInit(): void {
-    this.getProducts();
+  ngOnInit(): void {   
     this.getBrands();
     this.getTypes();
+    this.getProducts();
   }
 
   getProducts(){
@@ -44,6 +44,8 @@ export class ShopComponent implements OnInit {
         this.shopParams.pageNumber = response.pageIndex;
         this.shopParams.pageSize = response.pageSize;
         this.totalCount = response.count;
+
+        this.loadCompleted = true;
       }
     }, error => { 
        console.log(error);
