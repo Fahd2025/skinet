@@ -1,5 +1,6 @@
 using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -12,13 +13,20 @@ namespace API.Controllers
             _context = context;
         }
 
+        [HttpGet("testauth")]
+        [Authorize]
+        public string GetSecertText()
+        {
+            return "secert stuff";
+        }
+        
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
         {
             var thing = _context.Products.Find(42);
-            if(thing == null)
+            if (thing == null)
             {
-                 return NotFound(new ApiResponse(404));
+                return NotFound(new ApiResponse(404));
             }
 
             return Ok();
