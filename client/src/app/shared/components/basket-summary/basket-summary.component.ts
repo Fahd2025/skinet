@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BasketService } from 'src/app/basket/basket.service';
-import { IBasket, IBasketItem } from '../../models/basket';
+import { IBasketItem } from '../../models/basket';
+import { IOrderItem } from '../../models/order';
 
 @Component({
   selector: 'app-basket-summary',
@@ -9,17 +8,40 @@ import { IBasket, IBasketItem } from '../../models/basket';
   styleUrls: ['./basket-summary.component.scss']
 })
 export class BasketSummaryComponent implements OnInit {
-  basket$ = new Observable<IBasket | null>();
+
+  @Input() orderItems: IOrderItem[] = [];
+  @Input() items: IBasketItem[] = [];
+  @Input() isBasket = true;
+  @Input() isOrder = false;
+
   @Output() increment: EventEmitter<IBasketItem> = new EventEmitter<IBasketItem>();
   @Output() decrement: EventEmitter<IBasketItem> = new EventEmitter<IBasketItem>();
   @Output() remove: EventEmitter<IBasketItem> = new EventEmitter<IBasketItem>();
-  @Input() isBasket = true;
-  
-  constructor(private basketService: BasketService) { }
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.basket$ = this.basketService.basket$;
+    if (this.isOrder) {
+      this.convertOrderItems();
+    }
   }
+
+  convertOrderItems() {
+    if (this.orderItems.length > 0) {
+      this.orderItems.forEach(element => {
+        this.items.push({
+          id: element.productId,
+          productName: element.productName,
+          pictureUrl: element.pictureUrl,
+          quantity: element.quantity,
+          price: element.price,
+          type: '',
+          brand: ''
+        })
+      });
+    }
+  }
+
 
   incrementItemQuantity(item: IBasketItem) {
     this.increment.emit(item);
