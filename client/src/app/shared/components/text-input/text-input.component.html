@@ -1,8 +1,15 @@
 <div class="form-label-group">
     <input
         [ngClass]="(controlDir && controlDir.control && controlDir.control.touched) ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : ''"
-        [type]="type" (input)="initialOnChange($event.target)" (blur)="onTouched()" id="{{label}}" class="form-control"
+        [type]="type" 
+        (input)="initialOnChange($event.target)" 
+        (change)="initialOnChange($event.target)" 
+        (blur)="onTouched()" 
+        id="{{label}}" 
+        #input
+        class="form-control"
         placeholder="{{label}}">
+    
     <div class="fa fa-spinner fa-spin loader" *ngIf="controlDir && controlDir.control && controlDir.control.status === 'PENDING'"></div>    
     <div class="valid-feedback feedback-icon">
         <i class="fa fa-check"></i>
