@@ -6,6 +6,7 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,17 +23,12 @@ namespace API
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                var env = services.GetRequiredService<IWebHostEnvironment>();
                 try
                 {
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
 
-                    string seedDataPath = "wwwroot/SeedData/";
-                    if (env.IsDevelopment())
-                    {
-                        seedDataPath = "../Infrastructure/Data/SeedData/";
-                    }                    
+                    string seedDataPath = "Content/SeedData/";
                     await StoreContextSeed.SeedAsync(context,seedDataPath, loggerFactory);
 
                     var identityContext = services.GetRequiredService<AppIdentityDbContext>();

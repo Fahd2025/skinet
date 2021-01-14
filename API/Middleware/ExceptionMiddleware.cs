@@ -38,7 +38,7 @@ namespace API.Middleware
 
                 var response = _env.IsDevelopment() 
                 ? new ApiException(statusCode,ex.Message,ex.StackTrace.ToString())
-                : new ApiException(statusCode,ex.Message);
+                : new ApiException(statusCode,ex.Message,ex.StackTrace.ToString()); //
 
                 var option = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
                 var json = JsonSerializer.Serialize(response, option);

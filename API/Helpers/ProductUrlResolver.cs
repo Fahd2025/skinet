@@ -18,7 +18,7 @@ namespace API.Helpers
         {
             if(!String.IsNullOrEmpty(source.PictureUrl))
             {
-                return _config["AppUrl"] + source.PictureUrl;
+                return _config["ApiUrl"] + source.PictureUrl;
             }
 
             return null;

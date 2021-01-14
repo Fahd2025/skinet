@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
@@ -14,6 +15,9 @@ namespace Infrastructure.Data
     {
         public static async Task SeedAsync(StoreContext context, string dataPath, ILoggerFactory loggerFactory)
         {
+            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            dataPath = path + "/Data/SeedData/";
+
             try
             {
                 if (!context.ProductBrands.Any())
